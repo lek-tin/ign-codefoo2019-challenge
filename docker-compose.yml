@@ -1,0 +1,24 @@
+version: '2'
+services:
+  server:
+    build: ./web-service
+    ports:
+      - "8123:8123"
+    depends_on:
+      - db
+    environment:
+      - DATABASE_HOST=db
+    volumes:
+      - ./web-service/volumes/:/app/web-service/
+  db:
+    build: ./database-service
+    restart: always
+    ports:
+      # <Port exposed> : < MySQL Port running inside container>
+      - '3306:3306'
+    # expose:
+    #   # Opens port 3306 on the container
+    #   - '3306'
+    #   # Where our data will be persisted
+    volumes:
+      - ./database-service/volumes/:/app/database-service/
